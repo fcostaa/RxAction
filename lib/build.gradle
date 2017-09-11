@@ -7,7 +7,7 @@ publish {
     userOrg = 'fcostaa'
     groupId = 'com.fcostaa'
     artifactId = 'rxcommand'
-    publishVersion = '0.9'
+    publishVersion = '1.0'
     desc = 'RxCommand.'
     website = 'https://github.com/fcostaa/rxcommand'
 }
