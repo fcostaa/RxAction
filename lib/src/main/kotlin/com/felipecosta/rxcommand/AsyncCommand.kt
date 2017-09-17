@@ -5,7 +5,7 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 
 
-class AsyncCommand<Result : Any>(private val action: () -> Observable<Result>) : Command {
+class AsyncCommand<Input : Any, Result : Any>(private val action: (input: Input?) -> Observable<out Result>) : Command<Input> {
 
     private val inputRelay: PublishRelay<Any>
 
@@ -23,8 +23,8 @@ class AsyncCommand<Result : Any>(private val action: () -> Observable<Result>) :
         this.elementsPublishRelay = PublishRelay.create()
     }
 
-    override fun execute(): Completable {
-        return Observable.defer { action() }
+    override fun execute(input: Input?): Completable {
+        return Observable.defer { action(input) }
                 .doOnSubscribe { executingRelay.accept(true) }
                 .doOnNext { elementsPublishRelay.accept(it) }
                 .doOnNext { executingRelay.accept(false) }
