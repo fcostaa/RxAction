@@ -28,13 +28,11 @@ class AsyncCommand<Input : Any, Result : Any>(private val action: (input: Input?
                 .doOnSubscribe { executingRelay.accept(true) }
                 .doOnNext { elementsPublishRelay.accept(it) }
                 .doOnNext { executingRelay.accept(false) }
-                .onErrorResumeNext { throwable: Throwable ->
-                    executingRelay.accept(false)
-                    val emptyObservable = Observable.just(throwable).flatMap { Observable.empty<Result>() }
-                    throwablePublishRelay.accept(throwable)
-                    emptyObservable
-                }
                 .ignoreElements()
+                .doOnError { throwablePublishRelay.accept(it) }
+                .doOnError { executingRelay.accept(false) }
+                .onErrorResumeNext { Completable.complete() }
+
     }
 
     val executing: Observable<Boolean>
