@@ -1,84 +1,69 @@
 package com.felipecosta.rxcommand
 
-import com.nhaarman.mockito_kotlin.mock
 import io.reactivex.Observable
+import io.reactivex.Observable.error
+import io.reactivex.Observable.just
 import io.reactivex.observers.TestObserver
 import org.junit.Test
 
 class AsyncCommandTest {
 
+    val executionObserver: TestObserver<Any> = TestObserver.create()
+
+    val errorObserver: TestObserver<Throwable> = TestObserver.create<Throwable>()
+
+    val executingObserver: TestObserver<Boolean> = TestObserver.create()
+
     @Test
     fun givenSubscribedToExecutionWhenExecuteThenAssertValue() {
 
-        val mockResult = mock<Any>()
+        val expectedResult = Any()
 
-        val observable = Observable.just(mockResult)
-
-        val executionObserver: TestObserver<Any> = TestObserver.create()
-        val asyncCommand = AsyncCommand<Any, Any>({ observable })
+        val asyncCommand = AsyncCommand<Any, Any>({ just(expectedResult) })
 
         asyncCommand.execution.subscribe(executionObserver)
 
-        val disposable = asyncCommand.execute().subscribe()
+        asyncCommand.execute().subscribe()
 
-        executionObserver.assertValue(mockResult)
-
-        disposable.dispose()
+        executionObserver.assertValue(expectedResult)
     }
 
     @Test
     fun givenSubscribedToErrorsWhenExecuteThenAssertException() {
 
-        val exception = Exception()
+        val expectedException = Exception()
 
-        val actionObservable = Observable.error<Any>(exception)
-
-        val action = stubAction(null, actionObservable)
-
-        val errorObserver: TestObserver<Throwable> = TestObserver.create()
-        val asyncCommand = AsyncCommand<Nothing, Any>(action)
+        val asyncCommand = AsyncCommand<Nothing, Any>(stubAction(null, error<Any>(expectedException)))
 
         asyncCommand.errors.subscribe(errorObserver)
 
-        val disposable = asyncCommand.execute().subscribe()
+        asyncCommand.execute().subscribe()
 
-        errorObserver.assertValue(exception)
-
-        disposable.dispose()
+        errorObserver.assertValue(expectedException)
     }
 
     @Test
     fun givenSubscribedToExecutionWhenExecuteWithValueThenAssertValue() {
 
         val expectedResult = Any()
-        val actionObservable = Observable.just(expectedResult)
         val stubbedInput = Any()
 
-        val action = stubAction(stubbedInput, actionObservable)
-
-        val executionObserver: TestObserver<Any> = TestObserver.create()
-        val asyncCommand = AsyncCommand<Any, Any>(action)
+        val asyncCommand = AsyncCommand<Any, Any>(stubAction(stubbedInput, just(expectedResult)))
 
         asyncCommand.execution.subscribe(executionObserver)
 
-        val disposable = asyncCommand.execute(stubbedInput).subscribe()
+        asyncCommand.execute(stubbedInput).subscribe()
 
         executionObserver.assertValue(expectedResult)
-
-        disposable.dispose()
     }
 
     @Test
     fun givenSubscribedToExecutingWhenExecuteWithValueThenAssertStartAndFinishExecutingValues() {
 
         val expectedResult = Any()
-        val actionObservable = Observable.just(expectedResult)
         val stubbedInput = Any()
 
-        val action = stubAction(stubbedInput, actionObservable)
-
-        val executingObserver: TestObserver<Boolean> = TestObserver.create()
-        val asyncCommand = AsyncCommand<Any, Any>(action)
+        val asyncCommand = AsyncCommand<Any, Any>(stubAction(stubbedInput, just(expectedResult)))
 
         asyncCommand.executing.subscribe(executingObserver)
 
@@ -93,21 +78,15 @@ class AsyncCommandTest {
     fun givenSubscribedToErrorsWhenExecuteWithValueThenAssertException() {
 
         val exception = Exception()
-        val actionObservable = Observable.error<Any>(exception)
         val stubbedInput = Any()
 
-        val action = stubAction(stubbedInput, actionObservable)
-
-        val errorObserver: TestObserver<Throwable> = TestObserver.create()
-        val asyncCommand = AsyncCommand<Any, Any>(action)
+        val asyncCommand = AsyncCommand<Any, Any>(stubAction(stubbedInput, error<Any>(exception)))
 
         asyncCommand.errors.subscribe(errorObserver)
 
-        val disposable = asyncCommand.execute(stubbedInput).subscribe()
+        asyncCommand.execute(stubbedInput).subscribe()
 
         errorObserver.assertValue(exception)
-
-        disposable.dispose()
     }
 
     private fun <Input : Any, Result : Any> stubAction(stubbedInput: Input? = null, action: Observable<out Result>)
