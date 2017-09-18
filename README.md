@@ -1,7 +1,7 @@
 # RxCommand
 
 [![Build Status](https://travis-ci.org/felipehjcosta/kotlin-rxjava-android.svg?branch=master)](https://travis-ci.org/felipehjcosta/kotlin-rxjava-android)
-[![codecov](https://codecov.io/gh/fcostaa/RxCommand/branch/master/graph/badge.svg)](https://codecov.io/gh/fcostaa/RxCommand)
+[![codecov](https://codecov.io/gh/felipehjcosta/RxCommand/branch/master/graph/badge.svg)](https://codecov.io/gh/felipehjcosta/RxCommand)
 [![codebeat badge](https://codebeat.co/badges/a4d4b1a5-cce8-4f2b-b4f8-bae6614d3aa2)](https://codebeat.co/projects/github-com-fcostaa-rxcommand-master)
 
 
