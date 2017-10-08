@@ -5,7 +5,7 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 
 
-class AsyncCommand<Input : Any, Result : Any>(private val action: (input: Input?) -> Observable<out Result>) : Command<Input> {
+class RxAction<Input : Any, Result : Any>(private val action: (input: Input?) -> Observable<out Result>) : RxCommand<Input> {
 
     private val inputRelay: PublishRelay<Any>
 

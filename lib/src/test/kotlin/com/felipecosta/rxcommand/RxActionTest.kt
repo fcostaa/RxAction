@@ -6,7 +6,7 @@ import io.reactivex.Observable.just
 import io.reactivex.observers.TestObserver
 import org.junit.Test
 
-class AsyncCommandTest {
+class RxActionTest {
 
     val executionObserver: TestObserver<Any> = TestObserver.create()
 
@@ -19,7 +19,7 @@ class AsyncCommandTest {
 
         val expectedResult = Any()
 
-        val asyncCommand = AsyncCommand<Any, Any>({ just(expectedResult) })
+        val asyncCommand = RxAction<Any, Any>({ just(expectedResult) })
 
         asyncCommand.execution.subscribe(executionObserver)
 
@@ -33,7 +33,7 @@ class AsyncCommandTest {
 
         val expectedException = Exception()
 
-        val asyncCommand = AsyncCommand<Nothing, Any>(stubAction(null, error<Any>(expectedException)))
+        val asyncCommand = RxAction<Nothing, Any>(stubAction(null, error<Any>(expectedException)))
 
         asyncCommand.errors.subscribe(errorObserver)
 
@@ -48,7 +48,7 @@ class AsyncCommandTest {
         val expectedResult = Any()
         val stubbedInput = Any()
 
-        val asyncCommand = AsyncCommand<Any, Any>(stubAction(stubbedInput, just(expectedResult)))
+        val asyncCommand = RxAction<Any, Any>(stubAction(stubbedInput, just(expectedResult)))
 
         asyncCommand.execution.subscribe(executionObserver)
 
@@ -63,7 +63,7 @@ class AsyncCommandTest {
         val expectedResult = Any()
         val stubbedInput = Any()
 
-        val asyncCommand = AsyncCommand<Any, Any>(stubAction(stubbedInput, just(expectedResult)))
+        val asyncCommand = RxAction<Any, Any>(stubAction(stubbedInput, just(expectedResult)))
 
         asyncCommand.executing.subscribe(executingObserver)
 
@@ -80,7 +80,7 @@ class AsyncCommandTest {
         val exception = Exception()
         val stubbedInput = Any()
 
-        val asyncCommand = AsyncCommand<Any, Any>(stubAction(stubbedInput, error<Any>(exception)))
+        val asyncCommand = RxAction<Any, Any>(stubAction(stubbedInput, error<Any>(exception)))
 
         asyncCommand.errors.subscribe(errorObserver)
 
