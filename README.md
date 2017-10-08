@@ -9,7 +9,7 @@ This library is used with [RxJava2](https://github.com/ReactiveX/RxJava) to prov
 How to use
 --------
 
-RxActions accept an `action`: a lambda that takes some input and produces an observable. When the method `execute()` is called, it passes its parameter to this lambda and subscribes to the action managing the states, such as result, executing, error as observables using [RxJava2](https://github.com/ReactiveX/RxJava). Often the execution is triggered by some interaction in the UI like when the user clicks a button.
+RxActions accept an `action`: a lambda that takes some input and produces an observable. When the method `execute()` is called, it passes its parameter to this lambda and subscribes to the action managing the states, such as elements, executing, error as observables using [RxJava2](https://github.com/ReactiveX/RxJava). Often the execution is triggered by some interaction in the UI like when the user clicks a button.
 
 #### As Action
 
@@ -18,7 +18,7 @@ val action: RxAction<Any, List<Character>> { input -> characterRepository.fetchC
 
 ...
 
-action.execution.subscribe { /* item state */ }
+action.elements.subscribe { /* item state */ }
     
 action.executing.subscribe { /* executing state */ }
 
@@ -41,7 +41,7 @@ class CharacterListViewModel(private val characterRepository: CharacterRepositor
         get() = usersAction
     
     val items: Observable<List<Character>>
-        get() = usersAction.execution
+        get() = usersAction.elements
         
     val showLoading: Observable<Boolean>
         get() = usersAction.executing
