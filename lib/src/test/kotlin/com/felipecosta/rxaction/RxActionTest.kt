@@ -1,4 +1,4 @@
-package com.felipecosta.rxcommand
+package com.felipecosta.rxaction
 
 import io.reactivex.Observable
 import io.reactivex.Observable.error
@@ -19,11 +19,11 @@ class RxActionTest {
 
         val expectedResult = Any()
 
-        val asyncCommand = RxAction<Any, Any>({ just(expectedResult) })
+        val rxAction = RxAction<Any, Any> { just(expectedResult) }
 
-        asyncCommand.execution.subscribe(executionObserver)
+        rxAction.execution.subscribe(executionObserver)
 
-        asyncCommand.execute().subscribe()
+        rxAction.execute().subscribe()
 
         executionObserver.assertValue(expectedResult)
     }
@@ -33,11 +33,11 @@ class RxActionTest {
 
         val expectedException = Exception()
 
-        val asyncCommand = RxAction<Nothing, Any>(stubAction(null, error<Any>(expectedException)))
+        val rxAction = RxAction<Any, Any> { error<Any>(expectedException) }
 
-        asyncCommand.errors.subscribe(errorObserver)
+        rxAction.errors.subscribe(errorObserver)
 
-        asyncCommand.execute().subscribe()
+        rxAction.execute().subscribe()
 
         errorObserver.assertValue(expectedException)
     }
@@ -48,11 +48,11 @@ class RxActionTest {
         val expectedResult = Any()
         val stubbedInput = Any()
 
-        val asyncCommand = RxAction<Any, Any>(stubAction(stubbedInput, just(expectedResult)))
+        val rxAction = RxAction<Any, Any>(stubAction(stubbedInput, just(expectedResult)))
 
-        asyncCommand.execution.subscribe(executionObserver)
+        rxAction.execution.subscribe(executionObserver)
 
-        asyncCommand.execute(stubbedInput).subscribe()
+        rxAction.execute(stubbedInput).subscribe()
 
         executionObserver.assertValue(expectedResult)
     }
@@ -63,11 +63,11 @@ class RxActionTest {
         val expectedResult = Any()
         val stubbedInput = Any()
 
-        val asyncCommand = RxAction<Any, Any>(stubAction(stubbedInput, just(expectedResult)))
+        val rxAction = RxAction<Any, Any>(stubAction(stubbedInput, just(expectedResult)))
 
-        asyncCommand.executing.subscribe(executingObserver)
+        rxAction.executing.subscribe(executingObserver)
 
-        val disposable = asyncCommand.execute().subscribe()
+        val disposable = rxAction.execute().subscribe()
 
         executingObserver.assertValues(true, false)
 
@@ -77,19 +77,19 @@ class RxActionTest {
     @Test
     fun givenSubscribedToErrorsWhenExecuteWithValueThenAssertException() {
 
-        val exception = Exception()
+        val expectedException = Exception()
         val stubbedInput = Any()
 
-        val asyncCommand = RxAction<Any, Any>(stubAction(stubbedInput, error<Any>(exception)))
+        val rxAction = RxAction<Any, Any> { error<Any>(expectedException) }
 
-        asyncCommand.errors.subscribe(errorObserver)
+        rxAction.errors.subscribe(errorObserver)
 
-        asyncCommand.execute(stubbedInput).subscribe()
+        rxAction.execute(stubbedInput).subscribe()
 
-        errorObserver.assertValue(exception)
+        errorObserver.assertValue(expectedException)
     }
 
-    private fun <Input : Any, Result : Any> stubAction(stubbedInput: Input? = null, action: Observable<out Result>)
+    private fun <Input : Any, Result : Any> stubAction(stubbedInput: Input, action: Observable<out Result>)
             : (input: Input?) -> Observable<out Result> {
         return { input: Any? ->
             if (input == stubbedInput) {

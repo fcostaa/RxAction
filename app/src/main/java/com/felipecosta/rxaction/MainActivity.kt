@@ -1,4 +1,4 @@
-package com.felipecosta.rxcommand
+package com.felipecosta.rxaction
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle

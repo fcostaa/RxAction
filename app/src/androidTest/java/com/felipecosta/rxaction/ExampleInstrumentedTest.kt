@@ -1,4 +1,4 @@
-package com.felipecosta.rxcommand
+package com.felipecosta.rxaction
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

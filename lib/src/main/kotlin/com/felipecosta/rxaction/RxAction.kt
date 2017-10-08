@@ -1,4 +1,4 @@
-package com.felipecosta.rxcommand
+package com.felipecosta.rxaction
 
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Completable
@@ -23,7 +23,7 @@ class RxAction<Input : Any, Result : Any>(private val action: (input: Input?) ->
         this.elementsPublishRelay = PublishRelay.create()
     }
 
-    override fun execute(input: Input?): Completable {
+    override fun execute(input: Input): Completable {
         return Observable.defer { action(input) }
                 .doOnSubscribe { executingRelay.accept(true) }
                 .doOnNext { elementsPublishRelay.accept(it) }

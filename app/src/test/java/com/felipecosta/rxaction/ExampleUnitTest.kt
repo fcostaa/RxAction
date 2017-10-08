@@ -1,4 +1,4 @@
-package com.felipecosta.rxcommand
+package com.felipecosta.rxaction
 
 import org.junit.Test
 
