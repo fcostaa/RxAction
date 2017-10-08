@@ -1,9 +1,66 @@
-# RxCommand
+# RxAction
 
 [![Build Status](https://travis-ci.org/felipehjcosta/kotlin-rxjava-android.svg?branch=master)](https://travis-ci.org/felipehjcosta/kotlin-rxjava-android)
 [![codecov](https://codecov.io/gh/felipehjcosta/RxCommand/branch/master/graph/badge.svg)](https://codecov.io/gh/felipehjcosta/RxCommand)
 [![codebeat badge](https://codebeat.co/badges/a4d4b1a5-cce8-4f2b-b4f8-bae6614d3aa2)](https://codebeat.co/projects/github-com-fcostaa-rxcommand-master)
 
+This library is used with [RxJava2](https://github.com/ReactiveX/RxJava) to provide an abstraction on top of observables: actions, based on [Action](https://github.com/RxSwiftCommunity/Action).
+
+How to use
+--------
+
+RxActions accept an `action`: a lambda that takes some input and produces an observable. When the method `execute()` is called, it passes its parameter to this lambda and subscribes to the action managing the states, such as result, executing, error as observables using [RxJava2](https://github.com/ReactiveX/RxJava). Often the execution is triggered by some interaction in the UI like when the user clicks a button.
+
+#### As Action
+
+```kotlin
+val action: RxAction<Any, List<Character>> { input -> characterRepository.fetchCharacters()}
+
+...
+
+action.execution.subscribe { /* item state */ }
+    
+action.executing.subscribe { /* executing state */ }
+
+action.errors.subscribe { /* error state */ }
+                
+```
+
+#### As Command in ViewModel
+
+```kotlin
+class CharacterListViewModel(private val characterRepository: CharacterRepository) {
+
+    private val usersAction: RxAction<Any, List<Character>>;
+
+    init {
+        usersAction = RxAction { input -> characterRepository.fetchCharacters() }
+    }
+    
+    val loadItemsCommand: RxCommand
+        get() = usersAction
+    
+    val items: Observable<List<Character>>
+        get() = usersAction.execution
+        
+    val showLoading: Observable<Boolean>
+        get() = usersAction.executing
+        
+    val showLoadItemsError: Observable<Boolean>
+        get() = usersAction.errors.map { true }
+}
+
+...
+
+viewModel.items.subscribe { /* setup items on the screen */ }
+    
+viewModel.showLoading.subscribe { /* show loading or content to the user */ }
+
+viewModel.showLoadItemsError.subscribe { /* show failure to the user */ }
+                
+viewModel.loadItemsCommand.execute().subscribe()
+                
+```
 
 Download
 --------
