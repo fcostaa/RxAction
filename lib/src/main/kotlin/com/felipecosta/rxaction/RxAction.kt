@@ -5,7 +5,7 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 
 
-class RxAction<Input : Any, Result : Any>(private val action: (input: Input?) -> Observable<out Result>) : RxCommand<Input> {
+class RxAction<Input : Any, Element : Any>(private val action: (input: Input?) -> Observable<out Element>) : RxCommand<Input> {
 
     private val inputRelay: PublishRelay<Any>
 
@@ -13,7 +13,7 @@ class RxAction<Input : Any, Result : Any>(private val action: (input: Input?) ->
 
     private val throwablePublishRelay: PublishRelay<Throwable>
 
-    private val elementsPublishRelay: PublishRelay<Result>
+    private val elementsPublishRelay: PublishRelay<Element>
 
     init {
         this.inputRelay = PublishRelay.create()
@@ -41,6 +41,6 @@ class RxAction<Input : Any, Result : Any>(private val action: (input: Input?) ->
     val errors: Observable<Throwable>
         get() = throwablePublishRelay
 
-    val execution: Observable<Result>
+    val elements: Observable<Element>
         get() = elementsPublishRelay
 }

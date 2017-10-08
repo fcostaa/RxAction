@@ -21,7 +21,7 @@ class RxActionTest {
 
         val rxAction = RxAction<Any, Any> { just(expectedResult) }
 
-        rxAction.execution.subscribe(executionObserver)
+        rxAction.elements.subscribe(executionObserver)
 
         rxAction.execute().subscribe()
 
@@ -50,7 +50,7 @@ class RxActionTest {
 
         val rxAction = RxAction<Any, Any>(stubAction(stubbedInput, just(expectedResult)))
 
-        rxAction.execution.subscribe(executionObserver)
+        rxAction.elements.subscribe(executionObserver)
 
         rxAction.execute(stubbedInput).subscribe()
 
