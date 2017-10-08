@@ -5,9 +5,9 @@ apply plugin: 'com.novoda.bintray-release'
 
 publish {
     userOrg = 'fcostaa'
-    groupId = 'com.fcostaa'
-    artifactId = 'rxcommand'
-    publishVersion = '1.0'
+    groupId = 'com.felipehjcosta'
+    artifactId = 'rxaction'
+    publishVersion = '1.1.0'
     desc = 'RxCommand.'
     website = 'https://github.com/fcostaa/rxcommand'
 }
