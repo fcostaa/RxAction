@@ -7,21 +7,11 @@ import io.reactivex.Observable
 
 class RxAction<Input : Any, Element : Any>(private val action: (input: Input?) -> Observable<out Element>) : RxCommand<Input> {
 
-    private val inputRelay: PublishRelay<Any>
+    private val executingRelay: PublishRelay<Boolean> = PublishRelay.create()
 
-    private val executingRelay: PublishRelay<Boolean>
+    private val throwablePublishRelay: PublishRelay<Throwable> = PublishRelay.create()
 
-    private val throwablePublishRelay: PublishRelay<Throwable>
-
-    private val elementsPublishRelay: PublishRelay<Element>
-
-    init {
-        this.inputRelay = PublishRelay.create()
-        this.executingRelay = PublishRelay.create()
-
-        this.throwablePublishRelay = PublishRelay.create()
-        this.elementsPublishRelay = PublishRelay.create()
-    }
+    private val elementsPublishRelay: PublishRelay<Element> = PublishRelay.create()
 
     override fun execute(input: Input): Completable {
         return Observable.defer { action(input) }
