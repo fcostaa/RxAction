@@ -5,11 +5,11 @@ apply plugin: 'com.novoda.bintray-release'
 
 publish {
     userOrg = 'fcostaa'
-    groupId = 'com.felipehjcosta'
+    groupId = 'com.github.felipehjcosta'
     artifactId = 'rxaction'
     publishVersion = '1.1.0'
-    desc = 'RxCommand.'
-    website = 'https://github.com/fcostaa/rxcommand'
+    desc = 'RxAction'
+    website = 'https://github.com/felipehjcosta/RxAction'
 }
 
 jacoco {
