@@ -1,7 +1,7 @@
 # RxAction
 
 [![Build Status](https://travis-ci.org/felipehjcosta/kotlin-rxjava-android.svg?branch=master)](https://travis-ci.org/felipehjcosta/kotlin-rxjava-android)
-[![codecov](https://codecov.io/gh/felipehjcosta/RxCommand/branch/master/graph/badge.svg)](https://codecov.io/gh/felipehjcosta/RxCommand)
+[![codecov](https://codecov.io/gh/felipehjcosta/RxAction/branch/master/graph/badge.svg)](https://codecov.io/gh/felipehjcosta/RxAction)
 [![codebeat badge](https://codebeat.co/badges/a4d4b1a5-cce8-4f2b-b4f8-bae6614d3aa2)](https://codebeat.co/projects/github-com-fcostaa-rxcommand-master)
 
 This library is used with [RxJava2](https://github.com/ReactiveX/RxJava) to provide an abstraction on top of observables: actions, based on [Action](https://github.com/RxSwiftCommunity/Action).
