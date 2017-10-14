@@ -66,7 +66,7 @@ Download
 --------
 
 ```groovy
-    compile 'com.fcosta:rxaction:1.1.0'
+    compile 'com.felipehjcosta:rxaction:1.1.0'
     compile 'io.reactivex.rxjava2:rxjava:2.1.3'
     compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
 ```
