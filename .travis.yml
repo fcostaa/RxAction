@@ -11,10 +11,18 @@ android:
   - build-tools-27.0.3
 sudo: false
 
-script: gradle/buildViaTravis.sh
-
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+jobs:
+  include:
+    - stage: lint
+      script: ./gradlew detekt
+    - stage: test
+      script: ./gradlew build lib:jacocoTestReport
+      after_success:
+        - bash <(curl -s https://codecov.io/bash)
+    - stage: deploy
+      script: ./gradlew build lib:bintrayUpload -PbintrayUser="${BINTRAY_USER}" -PbintrayKey="${BINTRAY_PASSWORD}" -PdryRun=false
+      on:
+        tags: true
 
 cache:
   directories:
