@@ -8,11 +8,11 @@ import org.junit.Test
 
 class RxActionTest {
 
-    val executionObserver: TestObserver<Any> = TestObserver.create()
+    private val executionObserver = TestObserver.create<Any>()
 
-    val errorObserver: TestObserver<Throwable> = TestObserver.create<Throwable>()
+    private val errorObserver = TestObserver.create<Throwable>()
 
-    val executingObserver: TestObserver<Boolean> = TestObserver.create()
+    private val executingObserver = TestObserver.create<Boolean>()
 
     @Test
     fun givenSubscribedToExecutionWhenExecuteThenAssertValue() {
@@ -48,7 +48,7 @@ class RxActionTest {
         val expectedResult = Any()
         val stubbedInput = Any()
 
-        val rxAction = RxAction<Any, Any>(stubAction(stubbedInput, just(expectedResult)))
+        val rxAction = RxAction<Any, Any>(stubObservableIntoAction(stubbedInput, just(expectedResult)))
 
         rxAction.elements.subscribe(executionObserver)
 
@@ -63,7 +63,7 @@ class RxActionTest {
         val expectedResult = Any()
         val stubbedInput = Any()
 
-        val rxAction = RxAction<Any, Any>(stubAction(stubbedInput, just(expectedResult)))
+        val rxAction = RxAction<Any, Any>(stubObservableIntoAction(stubbedInput, just(expectedResult)))
 
         rxAction.executing.subscribe(executingObserver)
 
@@ -89,8 +89,9 @@ class RxActionTest {
         errorObserver.assertValue(expectedException)
     }
 
-    private fun <Input : Any, Result : Any> stubAction(stubbedInput: Input, action: Observable<out Result>)
-            : (input: Input?) -> Observable<out Result> {
+    private fun <Input : Any, Result : Any> stubObservableIntoAction(
+            stubbedInput: Input, action: Observable<out Result>
+    ): (input: Input?) -> Observable<out Result> {
         return { input: Any? ->
             if (input == stubbedInput) {
                 action
