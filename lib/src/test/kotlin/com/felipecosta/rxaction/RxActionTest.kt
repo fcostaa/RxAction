@@ -90,7 +90,8 @@ class RxActionTest {
     }
 
     private fun <Input : Any, Result : Any> stubObservableIntoAction(
-            stubbedInput: Input, action: Observable<out Result>
+        stubbedInput: Input,
+        action: Observable<out Result>
     ): (input: Input?) -> Observable<out Result> {
         return { input: Any? ->
             if (input == stubbedInput) {
