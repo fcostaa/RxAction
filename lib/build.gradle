@@ -39,7 +39,7 @@ jacocoTestReport {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "io.reactivex.rxjava2:rxjava:2.2.4"
+    implementation "io.reactivex.rxjava2:rxjava:2.2.7"
     implementation "com.jakewharton.rxrelay2:rxrelay:2.1.0"
 
     testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
