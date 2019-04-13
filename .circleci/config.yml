@@ -76,6 +76,18 @@ jobs:
           path: lib/build/test-results
     # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
 
+  build:
+    <<: *android_config
+    steps:
+      - checkout
+      - *generate_cache_key
+      - *restore_gradle_cache
+      - *android_dependencies
+      - *save_gradle_cache
+      - run:
+          name: "Build"
+          command:  ./gradlew build
+
   deploy:
     <<: *android_config
     steps:
@@ -86,7 +98,7 @@ jobs:
       - *save_gradle_cache
       - run:
           name: "Deploy to bintray"
-          command:  ./gradlew build lib:bintrayUpload -PbintrayUser="${BINTRAY_USER}" -PbintrayKey="${BINTRAY_PASSWORD}" -PdryRun=false
+          command:  ./gradlew lib:bintrayUpload -PbintrayUser="${BINTRAY_USER}" -PbintrayKey="${BINTRAY_PASSWORD}" -PdryRun=false
 
 workflows:
   version: 2
@@ -94,10 +106,15 @@ workflows:
     jobs:
       - lint
       - test
-      - deploy:
+      - build:
           requires:
             - lint
             - test
+      - deploy:
+          requires:
+            - build
           filters:
             tags:
               only: /.*/
+            branches:
+              ignore: /.*/
