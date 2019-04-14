@@ -3,12 +3,13 @@ apply plugin: 'kotlin'
 apply plugin: 'jacoco'
 apply plugin: 'com.novoda.bintray-release'
 apply plugin: "io.gitlab.arturbosch.detekt"
+apply plugin: "com.palantir.git-version"
 
 publish {
     userOrg = 'fcostaa'
     groupId = 'com.github.felipehjcosta'
     artifactId = 'rxaction'
-    publishVersion = '1.1.0'
+    publishVersion = "${versionDetails().lastTag}"
     desc = 'RxAction'
     website = 'https://github.com/felipehjcosta/RxAction'
 }
