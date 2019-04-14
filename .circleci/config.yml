@@ -110,6 +110,9 @@ workflows:
           requires:
             - lint
             - test
+  deploy_build:
+    jobs:
+      - build
       - deploy:
           requires:
             - build
