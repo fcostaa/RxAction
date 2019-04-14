@@ -102,7 +102,7 @@ jobs:
 
 workflows:
   version: 2
-  test_build:
+  test-build-deploy:
     jobs:
       - lint
       - test
@@ -110,9 +110,6 @@ workflows:
           requires:
             - lint
             - test
-  deploy_build:
-    jobs:
-      - build
       - deploy:
           requires:
             - build
