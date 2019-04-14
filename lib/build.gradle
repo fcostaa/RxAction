@@ -9,7 +9,7 @@ publish {
     userOrg = 'fcostaa'
     groupId = 'com.github.felipehjcosta'
     artifactId = 'rxaction'
-    publishVersion = "${versionDetails().lastTag}"
+    publishVersion = "${versionDetails().lastTag.replace("v", "")}"
     desc = 'RxAction'
     website = 'https://github.com/felipehjcosta/RxAction'
 }
