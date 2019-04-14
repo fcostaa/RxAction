@@ -102,7 +102,7 @@ jobs:
 
 workflows:
   version: 2
-  test-build-deploy:
+  test-build:
     jobs:
       - lint
       - test
@@ -110,9 +110,29 @@ workflows:
           requires:
             - lint
             - test
+  test-build-deploy:
+    jobs:
+      - lint:
           filters:
             tags:
-              only: /.*/
+              only: /^([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$/
+            branches:
+              ignore: /.*/
+      - test:
+          filters:
+            tags:
+              only: /^([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$/
+            branches:
+              ignore: /.*/
+      - build:
+          requires:
+            - lint
+            - test
+          filters:
+            tags:
+              only: /^([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$/
+            branches:
+              ignore: /.*/
       - deploy:
           requires:
             - build
