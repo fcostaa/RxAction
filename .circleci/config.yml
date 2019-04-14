@@ -110,6 +110,9 @@ workflows:
           requires:
             - lint
             - test
+          filters:
+            tags:
+              only: /.*/
       - deploy:
           requires:
             - build
